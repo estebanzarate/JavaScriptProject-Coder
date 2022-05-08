@@ -12,6 +12,7 @@ function Product(id, name, price, category) {
 let productList = "",
     listProducts = [],
     cart = [],
+    categories = ["Cat1", "Cat2", "Cat3"],
     data = [
     {
         id: 1,
@@ -50,19 +51,23 @@ data.forEach(el => {
     listProducts.push(product);
 });
 
-function renderProducts() {
-    productList = "";
-    productList += "Productos disponibles:\n\n";
-    for (const product of listProducts) {
-        productList += `${product.id}) ${product.name} - $${product.price} - Categoria: ${product.category}\n`;
-    }
-    productList += "\nF) Finalizar compra\nS) Salir";
+function app() {
+    renderProducts(listProducts);
 }
 
-function app() {
-    renderProducts();
+function renderProducts(list) {
+    productList = "";
+    productList += "Productos disponibles:\n\n";
+    for (const product of list) {
+        productList += `${product.id}) ${product.name} - $${product.price} - Categoria: ${product.category}\n`;
+    }
+    productList += "\nFF) Filtrar por categoría \n F) Finalizar compra \n S) Salir";
     let select = prompt(productList);
-    if(Number(select) <= 0 || Number(select) > listProducts.length) {
+    selectProduct(select, list);
+}
+
+function selectProduct(select, list) {
+    if(Number(select) <= 0 || Number(select) > list.length) {
         alert("Ingresa el número del producto a comprar");
         return app();
     }
@@ -82,6 +87,8 @@ function app() {
         }
         return total();
     };
+    if(select.toLowerCase() === "ff") return filters();
+    if(isNaN(select)) return app();
     addToCart(select);
 }
 
@@ -94,6 +101,17 @@ function addToCart(select) {
     product.increaseSubTotal(quantity);
     Product.total += product.price * quantity;
     app();
+}
+
+function filters() {
+    let filter = prompt(`Selecciona la categoria que querés ver\n${categories.join("\n")}`);
+    const filterCat = categories.find(el => el.toLowerCase() === filter.toLowerCase());
+    if(!filterCat) {
+        alert("Ingresa una categoría de la lista");
+        return filters();
+    }
+    const listFiltered = listProducts.filter(el => el.category === filter.toLowerCase());
+    renderProducts(listFiltered);
 }
 
 function total() {
