@@ -97,12 +97,13 @@ function addToCart(select) {
 }
 
 function total() {
-    let ticket = "Productos comprados:\n\n";
+    const date = new Date();
+    let ticket = `${date.toLocaleString()}\n\nProductos comprados:\n`;
     cart.forEach(el => {
         const product = listProducts.find(p => el === p.id);
         ticket += `${product.name} -- x${product.quantity} -- $${product.subTotal}\n`;
     })
-    ticket += `\n\tTotal a pagar: $${Product.total}`;
+    ticket += `\tTotal a pagar: $${Product.total}`;
     alert(`${ticket}\n\nGracias por tu compra!`);
 }
 
