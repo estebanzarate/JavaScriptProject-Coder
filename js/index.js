@@ -164,6 +164,7 @@ const checkout = e => {
             <div class="checkout-container">
                 <div class="checkout">
                     <h2>Gracias por tu compra!!</h2>
+                    <h3>Vuelva prontos</h3>
                     <img src="./apu.jpg" alt="vuelva pronto" />
                     <button class="back-to-home">VOLVER</button>
                 </div>
