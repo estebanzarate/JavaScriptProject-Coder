@@ -108,11 +108,13 @@ const addToCart = () => {
             <p>Total: $${total()}</p>
             <div>
                 <button class="empty-cart">Vaciar Carrito</button>
-                <button>Finalizar Compra</button>
+                <button class="checkout-btn">Finalizar Compra</button>
             </div>
         `;
         $main.insertAdjacentElement("afterend", $cart);
         $cart.insertAdjacentElement("beforeend", $total);
+        d.querySelector(".empty-cart").addEventListener("click", emptyCart);
+        d.querySelector(".checkout-btn").addEventListener("click", checkout);
     }
 }
 
@@ -149,19 +151,36 @@ const total = () => {
     return cart.reduce((a, p) => a + p.subtotal, 0);
 }
 
+//Vacia el carrito
 const emptyCart = e => {
-    if (e.target.matches(".empty-cart")) {
-        cart = [];
-        listProducts.forEach(el => el.quantity = 0);
-        addToCart();
+    cart = [];
+    listProducts.forEach(el => el.quantity = 0);
+    addToCart();
+}
+
+const checkout = e => {
+    if (e.target.matches(".checkout-btn")) {
+        d.body.innerHTML += `
+            <div class="checkout-container">
+                <div class="checkout">
+                    <h2>Gracias por tu compra!!</h2>
+                    <img src="./apu.jpg" alt="vuelva pronto" />
+                    <button class="back-to-home">VOLVER</button>
+                </div>
+            </div>
+        `;
+        d.querySelector(".back-to-home").addEventListener("click", () => {
+            d.querySelector(".checkout-container").remove();
+            location.reload();
+        });
     }
 }
 
+d.addEventListener("DOMContentLoaded", renderProducts);
 d.addEventListener("click", e => {
     buyProduct(e);
     decrementQuantity(e);
     incrementQuantity(e);
     deleteItem(e);
-    emptyCart(e);
 });
-d.addEventListener("DOMContentLoaded", renderProducts);
+
