@@ -49,7 +49,7 @@ const $cart = d.createElement("section");
 const $total = d.createElement("p");
 $total.classList.add("cart-total");
 const listProducts = [];
-const cart = [];
+let cart = [];
 
 data.forEach(el => listProducts.push(new Product(el.id, el.name, el.img, el.price)));
 
@@ -83,10 +83,6 @@ const buyProduct = e => {
 }
 
 const addToCart = () => {
-    if (cart.length > 0) {
-        $main.insertAdjacentElement("afterend", $cart);
-        $cart.insertAdjacentElement("beforeend", $total);
-    }
     $cart.innerHTML = "";
     cart.forEach(el => {
         $cart.innerHTML += `
@@ -99,18 +95,23 @@ const addToCart = () => {
                     <p>${el.quantity}</p>
                     <button class="card-cart-btn-inc" data-id="${el.id}">+</button>
                 </div>
+                <i class="fa-solid fa-trash-can" data-id="${el.id}"></i>
                 <p>$${el.subTotal()}</p>
             </div>
         `;
     })
     $total.innerHTML = `Total: $${total()}`;
-    $cart.insertAdjacentElement("beforeend", $total);
+    if (cart.length > 0) {
+        $main.insertAdjacentElement("afterend", $cart);
+        $cart.insertAdjacentElement("beforeend", $total);
+    }
 }
 
 const decrementQuantity = e => {
     if (e.target.matches(".card-cart-btn-dec")) {
         const p = cart.find(el => el.id === Number(e.target.dataset.id));
         p.decreaseQuantity();
+        if (p.quantity === 0) cart = cart.filter(el => el.id != p.id);
         addToCart();
     }
 }
@@ -123,6 +124,14 @@ const incrementQuantity = e => {
     }
 }
 
+const deleteItem = e => {
+    if (e.target.matches(".fa-trash-can")) {
+        const p = cart.find(el => el.id === Number(e.target.dataset.id));
+        cart = cart.filter(el => el.id != p.id);
+        return addToCart();
+    }
+}
+
 const total = () => {
     return cart.reduce((a, p) => a + p.subtotal, 0);
 }
@@ -130,5 +139,6 @@ const total = () => {
 d.addEventListener("click", buyProduct);
 d.addEventListener("click", decrementQuantity);
 d.addEventListener("click", incrementQuantity);
+d.addEventListener("click", deleteItem);
 
 renderProducts();
