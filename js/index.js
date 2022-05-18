@@ -2,31 +2,31 @@ const data = [
     {
         id: 1,
         name: "Producto1",
-        img: "https://placeimg.com/640/480/any",
+        img: "https://placeimg.com/640/480/animals",
         price: 100,
     },
     {
         id: 2,
         name: "Producto2",
-        img: "https://placeimg.com/640/480/any",
+        img: "https://placeimg.com/640/480/animals",
         price: 200,
     },
     {
         id: 3,
         name: "Producto3",
-        img: "https://placeimg.com/640/480/any",
+        img: "https://placeimg.com/640/480/animals",
         price: 300,
     },
     {
         id: 4,
         name: "Producto4",
-        img: "https://placeimg.com/640/480/any",
+        img: "https://placeimg.com/640/480/animals",
         price: 400,
     },
     {
         id: 5,
         name: "Producto5",
-        img: "https://placeimg.com/640/480/any",
+        img: "https://placeimg.com/640/480/animals",
         price: 500,
     },
 ];
@@ -46,17 +46,18 @@ function Product(id, name, img, price) {
 const d = document;
 const $main = d.getElementById("main");
 const $cart = d.createElement("section");
-const $total = d.createElement("p");
+const $total = d.createElement("footer");
 $total.classList.add("cart-total");
 const listProducts = [];
 let cart = [];
 
 data.forEach(el => listProducts.push(new Product(el.id, el.name, el.img, el.price)));
 
+//Muestra los productos
 const renderProducts = () => {
     listProducts.forEach(el => {
         $main.innerHTML += `
-        <div class="card-product">
+        <article class="card-product">
             <figure class="card-figure">
                 <img src="${el.img}" alt="${el.name}" />
             </figure>
@@ -65,10 +66,11 @@ const renderProducts = () => {
                 <h3>$${el.price}</h3>
                 <button class="card-btn-buy" data-id="${el.id}">COMPRAR</button>
             </div>
-        </div>`;
+        </article>`;
     });
 }
 
+//Agrega el producto seleccionado al carrito
 const buyProduct = e => {
     if (e.target.matches(".card-btn-buy")) {
         const p = listProducts.find(el => el.id === Number(e.target.dataset.id));
@@ -82,6 +84,7 @@ const buyProduct = e => {
     }
 }
 
+//Muestra el producto en el carrito
 const addToCart = () => {
     $cart.innerHTML = "";
     cart.forEach(el => {
@@ -100,13 +103,20 @@ const addToCart = () => {
             </div>
         `;
     })
-    $total.innerHTML = `Total: $${total()}`;
     if (cart.length > 0) {
+        $total.innerHTML = `
+            <p>Total: $${total()}</p>
+            <div>
+                <button class="empty-cart">Vaciar Carrito</button>
+                <button>Finalizar Compra</button>
+            </div>
+        `;
         $main.insertAdjacentElement("afterend", $cart);
         $cart.insertAdjacentElement("beforeend", $total);
     }
 }
 
+//Decrementa la cantidad del producto comprado
 const decrementQuantity = e => {
     if (e.target.matches(".card-cart-btn-dec")) {
         const p = cart.find(el => el.id === Number(e.target.dataset.id));
@@ -116,6 +126,7 @@ const decrementQuantity = e => {
     }
 }
 
+//Incrementa la cantidad del producto comprado
 const incrementQuantity = e => {
     if (e.target.matches(".card-cart-btn-inc")) {
         const p = cart.find(el => el.id === Number(e.target.dataset.id));
@@ -124,6 +135,7 @@ const incrementQuantity = e => {
     }
 }
 
+//Elimina el producto del carrito
 const deleteItem = e => {
     if (e.target.matches(".fa-trash-can")) {
         const p = cart.find(el => el.id === Number(e.target.dataset.id));
@@ -132,13 +144,24 @@ const deleteItem = e => {
     }
 }
 
+//Calcula el total del carrito
 const total = () => {
     return cart.reduce((a, p) => a + p.subtotal, 0);
 }
 
-d.addEventListener("click", buyProduct);
-d.addEventListener("click", decrementQuantity);
-d.addEventListener("click", incrementQuantity);
-d.addEventListener("click", deleteItem);
+const emptyCart = e => {
+    if (e.target.matches(".empty-cart")) {
+        cart = [];
+        listProducts.forEach(el => el.quantity = 0);
+        addToCart();
+    }
+}
 
-renderProducts();
+d.addEventListener("click", e => {
+    buyProduct(e);
+    decrementQuantity(e);
+    incrementQuantity(e);
+    deleteItem(e);
+    emptyCart(e);
+});
+d.addEventListener("DOMContentLoaded", renderProducts);
