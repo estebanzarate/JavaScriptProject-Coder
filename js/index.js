@@ -163,7 +163,7 @@ const checkout = e => {
         d.body.innerHTML += `
             <div class="checkout-container">
                 <div class="checkout">
-                    <h2>Gracias por tu compra!!</h2>
+                    <h2>Gracias por su compra!!</h2>
                     <h3>Vuelva prontos</h3>
                     <img src="./apu.jpg" alt="vuelva pronto" />
                     <button class="back-to-home">VOLVER</button>
@@ -171,7 +171,6 @@ const checkout = e => {
             </div>
         `;
         d.querySelector(".back-to-home").addEventListener("click", () => {
-            d.querySelector(".checkout-container").remove();
             location.reload();
         });
     }
