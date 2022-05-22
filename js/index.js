@@ -43,7 +43,6 @@ function Product(id, name, img, price) {
     this.increaseQuantity = () => this.quantity++;
 }
 
-const d = document;
 const $main = d.getElementById("main");
 const $cart = d.createElement("section");
 const $total = d.createElement("footer");
@@ -87,7 +86,6 @@ const buyProduct = e => {
 
 //Render products in cart
 const addToCart = () => {
-    console.log('carrito', cart);
     $cart.innerHTML = "";
     cart.forEach(el => {
         $cart.innerHTML += `
@@ -115,8 +113,8 @@ const addToCart = () => {
         `;
         $main.insertAdjacentElement("afterend", $cart);
         $cart.insertAdjacentElement("beforeend", $total);
-        d.querySelector(".empty-cart").addEventListener("click", emptyCart);
-        d.querySelector(".checkout-btn").addEventListener("click", checkout);
+        document.querySelector(".empty-cart").addEventListener("click", emptyCart);
+        document.querySelector(".checkout-btn").addEventListener("click", checkout);
     }
 }
 
@@ -167,7 +165,7 @@ const emptyCart = e => {
 //Thanks and get back soon
 const checkout = e => {
     if (e.target.matches(".checkout-btn")) {
-        d.body.innerHTML += `
+        document.body.innerHTML += `
             <div class="checkout-container">
                 <div class="checkout">
                     <h2>Gracias por su compra!!</h2>
@@ -177,7 +175,7 @@ const checkout = e => {
                 </div>
             </div>
         `;
-        d.querySelector(".back-to-home").addEventListener("click", () => {
+        document.querySelector(".back-to-home").addEventListener("click", () => {
             location.reload();
         });
     }
@@ -199,8 +197,8 @@ if (localStorage.getItem('cart')) {
     addToCart();
 }
 
-d.addEventListener("DOMContentLoaded", renderProducts);
-d.addEventListener("click", e => {
+document.addEventListener("DOMContentLoaded", renderProducts);
+document.addEventListener("click", e => {
     buyProduct(e);
     decrementQuantity(e);
     incrementQuantity(e);
