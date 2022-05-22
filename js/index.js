@@ -53,7 +53,7 @@ let cart = [];
 
 data.forEach(el => listProducts.push(new Product(el.id, el.name, el.img, el.price)));
 
-//Muestra los productos
+//Render products
 const renderProducts = () => {
     listProducts.forEach(el => {
         $main.innerHTML += `
@@ -70,7 +70,7 @@ const renderProducts = () => {
     });
 }
 
-//Agrega el producto seleccionado al carrito
+//Add product selected to cart
 const buyProduct = e => {
     if (e.target.matches(".card-btn-buy")) {
         const p = listProducts.find(el => el.id === Number(e.target.dataset.id));
@@ -81,11 +81,13 @@ const buyProduct = e => {
         }
         if (c) c.increaseQuantity();
         addToCart();
+        saveToLocalStorage();
     }
 }
 
-//Muestra el producto en el carrito
+//Render products in cart
 const addToCart = () => {
+    console.log('carrito', cart);
     $cart.innerHTML = "";
     cart.forEach(el => {
         $cart.innerHTML += `
@@ -118,46 +120,51 @@ const addToCart = () => {
     }
 }
 
-//Decrementa la cantidad del producto comprado
+//Decrease quantity
 const decrementQuantity = e => {
     if (e.target.matches(".card-cart-btn-dec")) {
         const p = cart.find(el => el.id === Number(e.target.dataset.id));
         p.decreaseQuantity();
         if (p.quantity === 0) cart = cart.filter(el => el.id != p.id);
         addToCart();
+        saveToLocalStorage();
     }
 }
 
-//Incrementa la cantidad del producto comprado
+//Increase quantity
 const incrementQuantity = e => {
     if (e.target.matches(".card-cart-btn-inc")) {
         const p = cart.find(el => el.id === Number(e.target.dataset.id));
         p.increaseQuantity();
         addToCart();
+        saveToLocalStorage();
     }
 }
 
-//Elimina el producto del carrito
+//Delete product from cart
 const deleteItem = e => {
     if (e.target.matches(".fa-trash-can")) {
         const p = cart.find(el => el.id === Number(e.target.dataset.id));
         cart = cart.filter(el => el.id != p.id);
+        saveToLocalStorage();
         return addToCart();
     }
 }
 
-//Calcula el total del carrito
+//Total cart
 const total = () => {
     return cart.reduce((a, p) => a + p.subtotal, 0);
 }
 
-//Vacia el carrito
+//Empty cart
 const emptyCart = e => {
     cart = [];
     listProducts.forEach(el => el.quantity = 0);
     addToCart();
+    localStorage.clear();
 }
 
+//Thanks and get back soon
 const checkout = e => {
     if (e.target.matches(".checkout-btn")) {
         d.body.innerHTML += `
@@ -176,6 +183,22 @@ const checkout = e => {
     }
 }
 
+//Save to local storage
+const saveToLocalStorage = () => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+//Load local storage
+if (localStorage.getItem('cart')) {
+    let cartCopy = JSON.parse(localStorage.getItem('cart'));
+    cartCopy.forEach(e => {
+        const p = new Product(e.id, e.name, e.img, e.price);
+        p.quantity = e.quantity;
+        cart.push(p)
+    });
+    addToCart();
+}
+
 d.addEventListener("DOMContentLoaded", renderProducts);
 d.addEventListener("click", e => {
     buyProduct(e);
@@ -183,4 +206,3 @@ d.addEventListener("click", e => {
     incrementQuantity(e);
     deleteItem(e);
 });
-
