@@ -43,9 +43,9 @@ function Product(id, name, img, price) {
     this.increaseQuantity = () => this.quantity++;
 }
 
-const $main = d.getElementById("main");
-const $cart = d.createElement("section");
-const $total = d.createElement("footer");
+const $main = document.getElementById("main");
+const $cart = document.createElement("section");
+const $total = document.createElement("footer");
 $total.classList.add("cart-total");
 const listProducts = [];
 let cart = [];
