@@ -177,6 +177,7 @@ const checkout = e => {
         `;
         document.querySelector(".back-to-home").addEventListener("click", () => {
             location.reload();
+            localStorage.clear();
         });
     }
 }
