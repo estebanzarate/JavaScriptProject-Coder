@@ -1,33 +1,99 @@
 const data = [
     {
         id: 1,
-        name: "Producto1",
-        img: "https://placeimg.com/640/480/animals",
+        name: "Stanley 'Stan' Marsh",
+        img: "./img/stan-marsh.png",
         price: 100,
     },
     {
         id: 2,
-        name: "Producto2",
-        img: "https://placeimg.com/640/480/animals",
+        name: "Kyle Broflovski",
+        img: "./img/kyle-broflovski.png",
         price: 200,
     },
     {
         id: 3,
-        name: "Producto3",
-        img: "https://placeimg.com/640/480/animals",
+        name: "Eric Theodore Cartman",
+        img: "./img/eric-cartman.png",
         price: 300,
     },
     {
         id: 4,
-        name: "Producto4",
-        img: "https://placeimg.com/640/480/animals",
+        name: "Kenneth 'Kenny' McCormick",
+        img: "./img/kenny-mccormick.png",
         price: 400,
     },
     {
         id: 5,
-        name: "Producto5",
-        img: "https://placeimg.com/640/480/animals",
+        name: "Leopold 'Butters' Stotch",
+        img: "./img/butters-stotch.png",
         price: 500,
+    },
+    {
+        id: 6,
+        name: "Tweek Tweak",
+        img: "./img/tweek-tweak.png",
+        price: 600,
+    },
+    {
+        id: 7,
+        name: "Bebe Stevens",
+        img: "./img/bebe-stevens.png",
+        price: 700,
+    },
+    {
+        id: 8,
+        name: "Jimmy Valmer",
+        img: "./img/jimmy-valmer.png",
+        price: 800,
+    },
+    {
+        id: 9,
+        name: "Jerome 'Chef' McElroy",
+        img: "./img/chef.png",
+        price: 900,
+    },
+    {
+        id: 10,
+        name: "Clyde Donovan",
+        img: "./img/clyde-donovan.png",
+        price: 1000,
+    },
+    {
+        id: 11,
+        name: "Craig Tucker",
+        img: "./img/craig-tucker.png",
+        price: 1100,
+    },
+    {
+        id: 12,
+        name: "Tolkien Black",
+        img: "./img/token-black.png",
+        price: 1200,
+    },
+    {
+        id: 13,
+        name: "Jason White",
+        img: "./img/jason.png",
+        price: 1300,
+    },
+    {
+        id: 14,
+        name: "Trent Boyett",
+        img: "./img/trent-boyett.png",
+        price: 1400,
+    },
+    {
+        id: 15,
+        name: "Wendy Testaburger",
+        img: "./img/wendy-testaburger.png",
+        price: 1500,
+    },
+    {
+        id: 16,
+        name: "Timmy Burch",
+        img: "./img/timmy-burch.png",
+        price: 1600,
     },
 ];
 
@@ -44,7 +110,9 @@ function Product(id, name, img, price) {
 }
 
 const $main = document.getElementById("main");
+const $iconCart = document.getElementById("icon-cart-container");
 const $cart = document.createElement("section");
+$cart.classList.add("cart");
 const $total = document.createElement("footer");
 $total.classList.add("cart-total");
 const listProducts = [];
@@ -60,7 +128,7 @@ const renderProducts = () => {
             <figure class="card-figure">
                 <img src="${el.img}" alt="${el.name}" />
             </figure>
-            <div>
+            <div class="card-details">
                 <h4>${el.name}</h4>
                 <h3>$${el.price}</h3>
                 <button class="card-btn-buy" data-id="${el.id}">COMPRAR</button>
@@ -89,33 +157,45 @@ const addToCart = () => {
     $cart.innerHTML = "";
     cart.forEach(el => {
         $cart.innerHTML += `
-            <div class="card-cart">
-                <img class="card-cart-img" src="${el.img}" alt="${el.name}"/>
-                <h3>${el.name}</h3>
-                <p>Cantidad: ${el.quantity}</p>
-                <div class="card-cart-btns">
-                    <button class="card-cart-btn-dec" data-id="${el.id}">-</button>
-                    <p>${el.quantity}</p>
-                    <button class="card-cart-btn-inc" data-id="${el.id}">+</button>
+            <div class="cart-card">
+                <div class="cart-img">
+                    <img class="card-cart-img" src="${el.img}" alt="${el.name}"/>
+                    <h3>${el.name}</h3>
                 </div>
-                <i class="fa-solid fa-trash-can" data-id="${el.id}"></i>
-                <p>$${el.subTotal()}</p>
+                <div class="card-btns">
+                    <p>Cantidad: ${el.quantity}</p>
+                    <button class="cart-btn card-cart-btn-dec" data-id="${el.id}">-</button>
+                    <button class="cart-btn card-cart-btn-inc" data-id="${el.id}">+</button>
+                    <i class="fa-solid fa-trash-can" data-id="${el.id}"></i>
+                </div>
+                <p class="cart-subtotal">$${el.subTotal()}</p>
             </div>
         `;
     })
+    if (cart.length === 0) {
+        $iconCart.style.visibility = "hidden";
+        $cart.parentNode.removeChild($cart);
+    }
     if (cart.length > 0) {
+        iconCart();
         $total.innerHTML = `
             <p>Total: $${total()}</p>
-            <div>
+            <div class="cart-btns-total">
                 <button class="empty-cart">Vaciar Carrito</button>
                 <button class="checkout-btn">Finalizar Compra</button>
             </div>
         `;
-        $main.insertAdjacentElement("afterend", $cart);
+        $main.insertAdjacentElement("afterbegin", $cart);
         $cart.insertAdjacentElement("beforeend", $total);
         document.querySelector(".empty-cart").addEventListener("click", emptyCart);
         document.querySelector(".checkout-btn").addEventListener("click", checkout);
     }
+}
+
+//Icon cart
+const iconCart = () => {
+    $iconCart.style.visibility = "visible";
+    $iconCart.lastElementChild.textContent = `${cart.length}`;
 }
 
 //Decrease quantity
@@ -165,12 +245,10 @@ const emptyCart = e => {
 //Thanks and get back soon
 const checkout = e => {
     if (e.target.matches(".checkout-btn")) {
-        document.body.innerHTML += `
+        document.body.innerHTML = `
             <div class="checkout-container">
                 <div class="checkout">
-                    <h2>Gracias por su compra!!</h2>
-                    <h3>Vuelva prontos</h3>
-                    <img src="./apu.jpg" alt="vuelva pronto" />
+                    <h2>Gracias por tu compra!!</h2>
                     <button class="back-to-home">VOLVER</button>
                 </div>
             </div>
