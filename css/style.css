@@ -72,6 +72,10 @@
     height: 2rem;
 }
 
+.cart-card {
+    border-bottom: .2rem solid black;
+}
+
 .cart-img {
     display: flex;
     align-items: center;
@@ -108,7 +112,7 @@
 }
 
 .cart-subtotal {
-    margin: 0;
+    margin: .3rem;
     font-size: 1.2rem;
     font-weight: 700;
 }

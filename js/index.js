@@ -160,7 +160,7 @@ const addToCart = () => {
             <div class="cart-card">
                 <div class="cart-img">
                     <img class="card-cart-img" src="${el.img}" alt="${el.name}"/>
-                    <h3>${el.name}</h3>
+                    <h2>${el.name}</h2>
                 </div>
                 <div class="card-btns">
                     <p>Cantidad: ${el.quantity}</p>
@@ -174,7 +174,6 @@ const addToCart = () => {
     })
     if (cart.length === 0) {
         $iconCart.style.visibility = "hidden";
-        $cart.parentNode.removeChild($cart);
     }
     if (cart.length > 0) {
         iconCart();
@@ -239,6 +238,7 @@ const emptyCart = e => {
     cart = [];
     listProducts.forEach(el => el.quantity = 0);
     addToCart();
+    $cart.parentNode.removeChild($cart);
     localStorage.clear();
 }
 
