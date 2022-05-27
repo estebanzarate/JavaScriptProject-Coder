@@ -163,12 +163,12 @@ const addToCart = () => {
                     <h2>${el.name}</h2>
                 </div>
                 <div class="card-btns">
-                    <p>Cantidad: ${el.quantity}</p>
+                    <p class="cart-subtotal">$${el.subTotal()}</p>
                     <button class="cart-btn card-cart-btn-dec" data-id="${el.id}">-</button>
+                    <p>${el.quantity}</p>
                     <button class="cart-btn card-cart-btn-inc" data-id="${el.id}">+</button>
                     <i class="fa-solid fa-trash-can" data-id="${el.id}"></i>
                 </div>
-                <p class="cart-subtotal">$${el.subTotal()}</p>
             </div>
         `;
     })
@@ -190,6 +190,7 @@ const addToCart = () => {
 const iconCart = () => {
     if (cart.length === 0) {
         $iconCart.style.visibility = "hidden";
+        $cart.classList.remove("cart-visible");
     }
     if (cart.length > 0) {
         $iconCart.style.visibility = "visible";
@@ -246,7 +247,7 @@ const emptyCart = e => {
     cart = [];
     listProducts.forEach(el => el.quantity = 0);
     addToCart();
-    $cart.parentNode.removeChild($cart);
+    $cart.classList.remove("cart-visible");
     localStorage.clear();
 }
 
