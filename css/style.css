@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+@font-face {
+    font-family: sp-font;
+    src: url(southpark.ttf);
+}
+
 :root {
     --main-font: 'Roboto', sans-serif;
 }
@@ -74,18 +79,21 @@ body::-webkit-scrollbar-thumb {
 .cart {
     position: absolute;
     top: 12rem;
-    right: 3rem;
+    right: 2rem;
     background-color: #ffcc00;
     width: 25rem;
     max-height: 40rem;
     padding: 1rem;
-    border-radius: 20px;
+    border-radius: 10px;
     overflow-y: auto;
     visibility: hidden;
+    opacity: 0;
+    transition: .5s;
 }
 
 .cart-visible {
     visibility: visible;
+    opacity: 1;
 }
 
 .cart::-webkit-scrollbar {
@@ -152,7 +160,8 @@ body::-webkit-scrollbar-thumb {
 .cart-btns-total button {
     padding: .4rem .8rem;
     margin: .5rem;
-    background-color: #ffcc00;
+    background-color: #000;
+    color: #ffcc00;
     font-size: 1rem;
 }
 
@@ -250,4 +259,33 @@ body::-webkit-scrollbar-thumb {
     bottom: 0;
     height: 10rem;
     background: url('../img/sp-footer.jpg') no-repeat center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer p {
+    color: #ffcc00;
+    font-size: 6rem;
+    font-weight: 700;
+    -webkit-text-stroke: 1px #000;
+    backdrop-filter: blur(10px);
+    padding-left: 2rem;
+    padding-right: 2rem;
+    border-radius: 20px;
+}
+
+@media screen and (max-width: 480px) {
+    .icon-cart-container {
+        margin: .5rem;
+    }
+
+    .cart {
+        right: 1rem;
+    }
+
+    .footer p {
+        font-size: 2rem;
+        padding: 1rem;
+    }
 }

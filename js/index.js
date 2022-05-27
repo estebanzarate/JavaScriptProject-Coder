@@ -112,6 +112,7 @@ function Product(id, name, img, price) {
 const $main = document.getElementById("main");
 const $iconCart = document.getElementById("icon-cart-container");
 const $cart = document.getElementById("cart");
+const $footer = document.getElementById("footer");
 const $total = document.createElement("footer");
 $total.classList.add("cart-total");
 const listProducts = [];
@@ -146,9 +147,20 @@ const buyProduct = e => {
             cart.push(p);
         }
         if (c) c.increaseQuantity();
+        productAdded();
         addToCart();
         saveToLocalStorage();
     }
+}
+
+//Product added
+const productAdded = () => {
+    $footer.innerHTML = `
+        <p id="product-bought">PRODUCTO AGREGADO</p>
+    `;
+    setTimeout(() => {
+        $footer.removeChild(document.getElementById("product-bought"));
+    }, 1000);
 }
 
 //Check if the product is in cart
