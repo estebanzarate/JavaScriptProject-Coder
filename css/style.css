@@ -80,7 +80,7 @@ body::-webkit-scrollbar-thumb {
     max-height: 40rem;
     padding: 1rem;
     border-radius: 20px;
-    overflow-y: scroll;
+    overflow-y: auto;
     visibility: hidden;
 }
 
@@ -201,6 +201,17 @@ body::-webkit-scrollbar-thumb {
 .card-btn-buy:hover {
     background-color: #cea500;
     cursor: pointer;
+}
+
+.btn-disabled {
+    background-color: gray;
+    color: #ff9d00;
+}
+
+.btn-disabled:hover {
+    background-color: gray;
+    color: #ff9d00;
+    cursor: default;
 }
 
 .checkout-container {

@@ -151,6 +151,23 @@ const buyProduct = e => {
     }
 }
 
+//Check if the product is in cart
+const inCart = () => {
+    const $btns = document.querySelectorAll(".card-btn-buy");
+    $btns.forEach(btn => {
+        const btnFound = cart.find(el => el.id === Number(btn.dataset.id));
+        if (btnFound) {
+            btn.disabled = true;
+            btn.classList.add("btn-disabled");
+            btn.textContent = "AGREGADO";
+        } else {
+            btn.disabled = false;
+            btn.classList.remove("btn-disabled");
+            btn.textContent = "COMPRAR";
+        }
+    })
+}
+
 //Render products in cart
 const addToCart = () => {
     iconCart();
@@ -172,6 +189,7 @@ const addToCart = () => {
             </div>
         `;
     })
+    inCart();
     if (cart.length > 0) {
         $total.innerHTML = `
             <p>Total: $${total()}</p>
@@ -276,18 +294,24 @@ const saveToLocalStorage = () => {
 }
 
 //Load local storage
-if (localStorage.getItem('cart')) {
-    let cartCopy = JSON.parse(localStorage.getItem('cart'));
-    cartCopy.forEach(e => {
-        const p = new Product(e.id, e.name, e.img, e.price);
-        p.quantity = e.quantity;
-        listProducts.push(p);
-        cart.push(p)
-    });
-    addToCart();
+const loadLocalStorage = () => {
+    if (localStorage.getItem('cart')) {
+        let cartCopy = JSON.parse(localStorage.getItem('cart'));
+        cartCopy.forEach(e => {
+            const p = new Product(e.id, e.name, e.img, e.price);
+            p.quantity = e.quantity;
+            cart.push(p)
+        });
+        addToCart();
+    }
 }
 
-document.addEventListener("DOMContentLoaded", renderProducts);
+loadLocalStorage();
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderProducts();
+    inCart();
+});
 document.addEventListener("click", e => {
     buyProduct(e);
     decrementQuantity(e);
