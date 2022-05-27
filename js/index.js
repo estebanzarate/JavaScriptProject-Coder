@@ -111,8 +111,7 @@ function Product(id, name, img, price) {
 
 const $main = document.getElementById("main");
 const $iconCart = document.getElementById("icon-cart-container");
-const $cart = document.createElement("section");
-$cart.classList.add("cart");
+const $cart = document.getElementById("cart");
 const $total = document.createElement("footer");
 $total.classList.add("cart-total");
 const listProducts = [];
@@ -154,6 +153,7 @@ const buyProduct = e => {
 
 //Render products in cart
 const addToCart = () => {
+    iconCart();
     $cart.innerHTML = "";
     cart.forEach(el => {
         $cart.innerHTML += `
@@ -172,11 +172,7 @@ const addToCart = () => {
             </div>
         `;
     })
-    if (cart.length === 0) {
-        $iconCart.style.visibility = "hidden";
-    }
     if (cart.length > 0) {
-        iconCart();
         $total.innerHTML = `
             <p>Total: $${total()}</p>
             <div class="cart-btns-total">
@@ -184,7 +180,6 @@ const addToCart = () => {
                 <button class="checkout-btn">Finalizar Compra</button>
             </div>
         `;
-        $main.insertAdjacentElement("afterbegin", $cart);
         $cart.insertAdjacentElement("beforeend", $total);
         document.querySelector(".empty-cart").addEventListener("click", emptyCart);
         document.querySelector(".checkout-btn").addEventListener("click", checkout);
@@ -193,8 +188,21 @@ const addToCart = () => {
 
 //Icon cart
 const iconCart = () => {
-    $iconCart.style.visibility = "visible";
-    $iconCart.lastElementChild.textContent = `${cart.length}`;
+    if (cart.length === 0) {
+        $iconCart.style.visibility = "hidden";
+    }
+    if (cart.length > 0) {
+        $iconCart.style.visibility = "visible";
+        $iconCart.lastElementChild.textContent = `${cart.length}`;
+    }
+}
+
+//Display or hide cart
+const displayCart = e => {
+    if (e.target.matches(".icon-cart") || e.target.matches(".icon-cart-quantity")) {
+        if (!$cart.classList.contains("cart-visible")) return $cart.classList.add("cart-visible");
+        if ($cart.classList.contains("cart-visible")) return $cart.classList.remove("cart-visible");
+    }
 }
 
 //Decrease quantity
@@ -262,6 +270,7 @@ const checkout = e => {
 
 //Save to local storage
 const saveToLocalStorage = () => {
+    if (cart.length === 0) return localStorage.clear();
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
@@ -271,6 +280,7 @@ if (localStorage.getItem('cart')) {
     cartCopy.forEach(e => {
         const p = new Product(e.id, e.name, e.img, e.price);
         p.quantity = e.quantity;
+        listProducts.push(p);
         cart.push(p)
     });
     addToCart();
@@ -282,4 +292,5 @@ document.addEventListener("click", e => {
     decrementQuantity(e);
     incrementQuantity(e);
     deleteItem(e);
+    displayCart(e);
 });
