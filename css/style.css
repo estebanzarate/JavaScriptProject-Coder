@@ -2,11 +2,12 @@
 
 @font-face {
     font-family: sp-font;
-    src: url(southpark.ttf);
+    src: url(../font/southpark.ttf);
 }
 
 :root {
     --main-font: 'Roboto', sans-serif;
+
 }
 
 .body {
@@ -19,6 +20,7 @@
     flex-direction: column;
     position: relative;
     font-family: var(--main-font);
+    overflow-x: hidden;
 }
 
 body::-webkit-scrollbar {
@@ -56,6 +58,17 @@ body::-webkit-scrollbar-thumb {
     cursor: pointer;
 }
 
+.product-added {
+    position: absolute;
+    top: -2.5rem;
+    left: -7.5rem;
+    width: fit-content;
+    font-size: 1.5rem;
+    font-weight: 900;
+    font-family: sp-font;
+    text-shadow: 0 0 2px red;
+}
+
 .icon-cart {
     width: 100%;
 }
@@ -84,16 +97,18 @@ body::-webkit-scrollbar-thumb {
     width: 25rem;
     max-height: 40rem;
     padding: 1rem;
-    border-radius: 10px;
     overflow-y: auto;
     visibility: hidden;
     opacity: 0;
-    transition: .5s;
+    transform: translate(50%, -50%);
+    transition: .4s;
+    scroll-behavior: smooth;
 }
 
 .cart-visible {
     visibility: visible;
     opacity: 1;
+    transform: translate(0);
 }
 
 .cart::-webkit-scrollbar {
@@ -103,6 +118,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .cart::-webkit-scrollbar-thumb {
+    padding: 1rem;
     background-color: #000;
     border-radius: 10px;
 }
@@ -114,6 +130,7 @@ body::-webkit-scrollbar-thumb {
 .cart-img {
     display: flex;
     align-items: center;
+
 }
 
 .cart-img img {
@@ -121,10 +138,65 @@ body::-webkit-scrollbar-thumb {
     margin: 1rem;
 }
 
+.cart-img img:hover {
+    animation: shake .5s infinite;
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(1px, 1px) rotate(0deg);
+    }
+
+    10% {
+        transform: translate(-1px, -2px) rotate(-1deg);
+    }
+
+    20% {
+        transform: translate(-3px, 0px) rotate(1deg);
+    }
+
+    30% {
+        transform: translate(3px, 2px) rotate(0deg);
+    }
+
+    40% {
+        transform: translate(1px, -1px) rotate(1deg);
+    }
+
+    50% {
+        transform: translate(-1px, 2px) rotate(-1deg);
+    }
+
+    60% {
+        transform: translate(-3px, 1px) rotate(0deg);
+    }
+
+    70% {
+        transform: translate(3px, 1px) rotate(-1deg);
+    }
+
+    80% {
+        transform: translate(-1px, -1px) rotate(1deg);
+    }
+
+    90% {
+        transform: translate(1px, 2px) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(1px, -2px) rotate(-1deg);
+    }
+}
+
+.cart-name {
+    text-shadow: 1px 1px 10px #000;
+}
+
 .card-btns {
-    display: flex;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     align-items: center;
+    justify-items: center;
 }
 
 .card-btns button:hover,
@@ -137,19 +209,69 @@ body::-webkit-scrollbar-thumb {
 }
 
 .cart-btn {
-    width: 1.3rem;
-    height: 1.3rem;
+    width: 1.5rem;
+    height: 1.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #cea500;
     border: 1px solid white;
+    transition: .2s;
+}
+
+.cart-quantity {
+    font-family: sp-font;
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+@keyframes btnAdd {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.4);
+    }
+}
+
+.card-cart-btn-inc,
+.card-cart-btn-inc::first-letter {
+    animation: btnAdd .2s infinite alternate;
+}
+
+.card-cart-btn-inc:hover {
+    color: green;
+    font-size: 1.5rem;
+}
+
+.cart-btn:hover {
+    cursor: pointer;
+    background-color: #ffcc00;
+    transform: scale(1.3);
+}
+
+.fa-trash-can:active {
+    transform: scale(1.3) rotateZ(15deg);
+    color: red;
 }
 
 .cart-subtotal {
     margin: .3rem;
     font-size: 1.2rem;
     font-weight: 700;
+}
+
+.cart-total {
+    margin: 0;
+    font-size: 2rem;
+    font-family: sp-font;
+}
+
+.cart-total total,
+subtotal {
+    color: red;
+    font-weight: 900;
 }
 
 .cart-btns-total {
@@ -178,14 +300,12 @@ body::-webkit-scrollbar-thumb {
     grid-template-columns: repeat(auto-fill, 18rem);
     gap: 1rem;
     justify-content: center;
-    align-items: flex-start;
     overflow: hidden;
 }
 
 .card-product {
     padding: 1rem;
-    width: 100%;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(20px);
 }
 
 .card-figure img {
@@ -194,9 +314,24 @@ body::-webkit-scrollbar-thumb {
     object-fit: cover;
 }
 
+.card-figure img:hover {
+    animation: shake .5s infinite;
+}
+
 .card-details {
     color: #ffcc00;
     font-size: 1.2rem;
+}
+
+.card-name {
+    text-shadow: 0 0 1px #000;
+}
+
+.card-price {
+    font-family: sp-font;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #ff9d00;
 }
 
 .card-btn-buy {
@@ -255,8 +390,6 @@ body::-webkit-scrollbar-thumb {
 }
 
 .footer {
-    position: sticky;
-    bottom: 0;
     height: 10rem;
     background: url('../img/sp-footer.jpg') no-repeat center/cover;
     display: flex;
@@ -264,23 +397,18 @@ body::-webkit-scrollbar-thumb {
     align-items: center;
 }
 
-.footer p {
-    color: #ffcc00;
-    font-size: 6rem;
-    font-weight: 700;
-    -webkit-text-stroke: 1px #000;
-    backdrop-filter: blur(10px);
-    padding-left: 2rem;
-    padding-right: 2rem;
-    border-radius: 20px;
-}
-
 @media screen and (max-width: 480px) {
+    .header {
+        background-size: 160%;
+        background-position: -8rem -2rem;
+    }
+
     .icon-cart-container {
         margin: .5rem;
     }
 
     .cart {
+        width: 21rem;
         right: 1rem;
     }
 

@@ -129,8 +129,8 @@ const renderProducts = () => {
                 <img src="${el.img}" alt="${el.name}" />
             </figure>
             <div class="card-details">
-                <h4>${el.name}</h4>
-                <h3>$${el.price}</h3>
+                <h4 class="card-name">${el.name}</h4>
+                <h3 class="card-price">$${el.price}</h3>
                 <button class="card-btn-buy" data-id="${el.id}">COMPRAR</button>
             </div>
         </article>`;
@@ -146,7 +146,6 @@ const buyProduct = e => {
             p.increaseQuantity();
             cart.push(p);
         }
-        if (c) c.increaseQuantity();
         productAdded();
         addToCart();
         saveToLocalStorage();
@@ -155,11 +154,9 @@ const buyProduct = e => {
 
 //Product added
 const productAdded = () => {
-    $footer.innerHTML = `
-        <p id="product-bought">PRODUCTO AGREGADO</p>
-    `;
+    $iconCart.insertAdjacentHTML("afterbegin", '<p id="product-bought" class="product-added">producto agregado</p>');
     setTimeout(() => {
-        $footer.removeChild(document.getElementById("product-bought"));
+        $iconCart.removeChild(document.getElementById("product-bought"));
     }, 1000);
 }
 
@@ -189,12 +186,12 @@ const addToCart = () => {
             <div class="cart-card">
                 <div class="cart-img">
                     <img class="card-cart-img" src="${el.img}" alt="${el.name}"/>
-                    <h2>${el.name}</h2>
+                    <h2 class="cart-name">${el.name}</h2>
                 </div>
                 <div class="card-btns">
-                    <p class="cart-subtotal">$${el.subTotal()}</p>
+                    <p class="cart-subtotal"><subtotal>$${el.subTotal()}</subtotal></p>
                     <button class="cart-btn card-cart-btn-dec" data-id="${el.id}">-</button>
-                    <p>${el.quantity}</p>
+                    <p class="cart-quantity">${el.quantity}</p>
                     <button class="cart-btn card-cart-btn-inc" data-id="${el.id}">+</button>
                     <i class="fa-solid fa-trash-can" data-id="${el.id}"></i>
                 </div>
@@ -204,7 +201,7 @@ const addToCart = () => {
     inCart();
     if (cart.length > 0) {
         $total.innerHTML = `
-            <p>Total: $${total()}</p>
+            <p>Total: <total>$${total()}</total></p>
             <div class="cart-btns-total">
                 <button class="empty-cart">Vaciar Carrito</button>
                 <button class="checkout-btn">Finalizar Compra</button>
