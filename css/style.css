@@ -100,8 +100,8 @@ body::-webkit-scrollbar-thumb {
     overflow-y: auto;
     visibility: hidden;
     opacity: 0;
-    transform: translate(50%, -50%);
-    transition: .4s;
+    transform: translate(50%, -50%) scale(0);
+    transition: .3s;
     scroll-behavior: smooth;
 }
 
@@ -376,12 +376,36 @@ subtotal {
     color: #fff;
 }
 
+.checkout-thanks {
+    font-family: sp-font;
+    font-size: 2rem;
+    color: #ffcc00;
+}
+
+@keyframes mrHankey {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+.mr-hankey {
+    position: absolute;
+    width: 5rem;
+    transform: translateY(-100%);
+    animation: mrHankey 1s linear;
+}
+
 .back-to-home {
     background-color: #cea500;
     padding: .6rem 1rem;
     border: none;
     font-size: 1.1rem;
     transition: .3s;
+    z-index: 20;
 }
 
 .back-to-home:hover {

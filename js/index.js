@@ -281,19 +281,38 @@ const emptyCart = e => {
 //Thanks and get back soon
 const checkout = e => {
     if (e.target.matches(".checkout-btn")) {
+        document.body.style.overflow = "hidden";
         document.body.innerHTML = `
             <div class="checkout-container">
                 <div class="checkout">
-                    <h2>Gracias por tu compra!!</h2>
+                    <h2 class="checkout-thanks">Gracias por tu compra</h2>
                     <button class="back-to-home">VOLVER</button>
                 </div>
             </div>
         `;
+        mrHankey();
         document.querySelector(".back-to-home").addEventListener("click", () => {
             location.reload();
             localStorage.clear();
         });
     }
+}
+
+//Soretes!!
+const mrHankey = () => {
+    setInterval(() => {
+        for (let i = 0; i < 10; i++) {
+            const $mrHankey = document.createElement("img");
+            const randomLeft = Math.random().toFixed(2) * window.innerWidth;
+            const randomDelay = Math.random().toFixed(2);
+            $mrHankey.src = "./img/mr-hankey.png";
+            $mrHankey.classList.add("mr-hankey");
+            $mrHankey.style.left = `${randomLeft}px`;
+            $mrHankey.style.animationDelay = `${randomDelay}s`;
+            $mrHankey.addEventListener("animationend", () => $mrHankey.remove());
+            document.body.appendChild($mrHankey);
+        }
+    }, 1000);
 }
 
 //Save to local storage
@@ -309,7 +328,7 @@ const loadLocalStorage = () => {
         cartCopy.forEach(e => {
             const p = new Product(e.id, e.name, e.img, e.price);
             p.quantity = e.quantity;
-            cart.push(p)
+            cart.push(p);
         });
         addToCart();
     }
