@@ -5,11 +5,12 @@
     src: url(../font/southpark.ttf);
 }
 
+/* RESET */
 :root {
     --main-font: 'Roboto', sans-serif;
-
 }
 
+/* BODY */
 .body {
     padding: 0;
     margin: 0;
@@ -34,6 +35,7 @@ body::-webkit-scrollbar-thumb {
     background-color: #ffcc00;
 }
 
+/* HEADER */
 .header {
     position: sticky;
     top: 0;
@@ -46,6 +48,7 @@ body::-webkit-scrollbar-thumb {
     z-index: 5;
 }
 
+/* ICON CART */
 .icon-cart-container {
     width: 6rem;
     height: 6rem;
@@ -58,21 +61,11 @@ body::-webkit-scrollbar-thumb {
     cursor: pointer;
 }
 
-.product-added {
-    position: absolute;
-    top: -2.5rem;
-    left: -7.5rem;
-    width: fit-content;
-    font-size: 1.5rem;
-    font-weight: 900;
-    font-family: sp-font;
-    text-shadow: 0 0 2px red;
-}
-
 .icon-cart {
     width: 100%;
 }
 
+/* ICON CART QUANTITY */
 .icon-cart-quantity {
     position: absolute;
     width: 1rem;
@@ -89,6 +82,19 @@ body::-webkit-scrollbar-thumb {
     align-items: center;
 }
 
+/* ALERT PRODUCT ADDED */
+.product-added {
+    position: absolute;
+    top: -2.5rem;
+    left: -7.5rem;
+    width: fit-content;
+    font-size: 1.5rem;
+    font-weight: 900;
+    font-family: sp-font;
+    text-shadow: 0 0 2px red;
+}
+
+/* CART */
 .cart {
     position: absolute;
     top: 12rem;
@@ -192,19 +198,19 @@ body::-webkit-scrollbar-thumb {
     text-shadow: 1px 1px 10px #000;
 }
 
-.card-btns {
+.cart-btns {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     align-items: center;
     justify-items: center;
 }
 
-.card-btns button:hover,
-.card-btns i {
+.cart-btns button:hover,
+.cart-btns i {
     cursor: pointer;
 }
 
-.card-btns i {
+.cart-btns i {
     font-size: 1.5rem;
 }
 
@@ -235,12 +241,12 @@ body::-webkit-scrollbar-thumb {
     }
 }
 
-.card-cart-btn-inc,
-.card-cart-btn-inc::first-letter {
+.cart-btn-inc,
+.cart-btn-inc::first-letter {
     animation: btnAdd .2s infinite alternate;
 }
 
-.card-cart-btn-inc:hover {
+.cart-btn-inc:hover {
     color: green;
     font-size: 1.5rem;
 }
@@ -257,9 +263,11 @@ body::-webkit-scrollbar-thumb {
 }
 
 .cart-subtotal {
+    font-family: sp-font;
     margin: .3rem;
     font-size: 1.2rem;
     font-weight: 700;
+    color: #000;
 }
 
 .cart-total {
@@ -268,8 +276,7 @@ body::-webkit-scrollbar-thumb {
     font-family: sp-font;
 }
 
-.cart-total total,
-subtotal {
+.cart-total total {
     color: red;
     font-weight: 900;
 }
@@ -292,17 +299,19 @@ subtotal {
     color: #fff;
 }
 
+/* PRODUCTS */
 .main {
     background: url('../img/back2.jpg') no-repeat center/cover;
     padding: 2rem;
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, 18rem);
+    grid-template-columns: repeat(auto-fill, 20rem);
     gap: 1rem;
     justify-content: center;
     overflow: hidden;
 }
 
+/* CARDS PRODUCTS */
 .card-product {
     padding: 1rem;
     backdrop-filter: blur(20px);
@@ -329,35 +338,43 @@ subtotal {
 
 .card-price {
     font-family: sp-font;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 900;
     color: #ff9d00;
+    text-shadow: 0 0 1px #000;
 }
 
 .card-btn-buy {
     padding: .6rem 1rem;
-    background-color: #ffcc00;
+    background-color: #cea500;
     border: none;
     font-size: 1.1rem;
-    transition: .3s;
+    transition: .1s;
 }
 
 .card-btn-buy:hover {
-    background-color: #cea500;
+    background-color: #ffcc00;
     cursor: pointer;
+    outline: #ff9d00 solid .2rem;
+}
+
+.card-btn-buy:active {
+    transform: scale(.9);
 }
 
 .btn-disabled {
-    background-color: gray;
-    color: #ff9d00;
+    background-color: rgb(97, 97, 97);
+    color: #fff;
 }
 
 .btn-disabled:hover {
-    background-color: gray;
-    color: #ff9d00;
+    background-color: rgb(97, 97, 97);
+    color: #fff;
     cursor: default;
+    outline: unset;
 }
 
+/* CHECKOUT */
 .checkout-container {
     background: url('../img/thanks.jpg') no-repeat center/cover;
     background-color: #ffcc00;
@@ -382,6 +399,7 @@ subtotal {
     color: #ffcc00;
 }
 
+/* SORETES */
 @keyframes mrHankey {
     0% {
         transform: translateY(-100%);
@@ -399,6 +417,7 @@ subtotal {
     animation: mrHankey 1s linear;
 }
 
+/* BUTTON BACK TO HOME */
 .back-to-home {
     background-color: #cea500;
     padding: .6rem 1rem;
@@ -413,6 +432,7 @@ subtotal {
     cursor: pointer;
 }
 
+/* FOOTER */
 .footer {
     height: 10rem;
     background: url('../img/sp-footer.jpg') no-repeat center/cover;
@@ -421,6 +441,7 @@ subtotal {
     align-items: center;
 }
 
+/* QUERIES */
 @media screen and (max-width: 480px) {
     .header {
         background-size: 160%;

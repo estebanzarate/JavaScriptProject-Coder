@@ -140,30 +140,30 @@ const renderProducts = () => {
 //Add product selected to cart
 const buyProduct = e => {
     if (e.target.matches(".card-btn-buy")) {
-        const p = listProducts.find(el => el.id === Number(e.target.dataset.id));
-        const c = cart.find(el => el.id === p.id);
-        if (!c) {
-            p.increaseQuantity();
-            cart.push(p);
+        const productFound = listProducts.find(el => el.id === Number(e.target.dataset.id));
+        const productInCart = cart.find(el => el.id === productFound.id);
+        if (!productInCart) {
+            productFound.increaseQuantity();
+            cart.push(productFound);
         }
-        productAdded();
+        alertProductAdded();
         addToCart();
         saveToLocalStorage();
     }
 }
 
 //Product added
-const productAdded = () => {
+const alertProductAdded = () => {
     $iconCart.insertAdjacentHTML("afterbegin", '<p id="product-bought" class="product-added">producto agregado</p>');
     setTimeout(() => {
         $iconCart.removeChild(document.getElementById("product-bought"));
-    }, 1000);
+    }, 500);
 }
 
 //Check if the product is in cart
 const inCart = () => {
-    const $btns = document.querySelectorAll(".card-btn-buy");
-    $btns.forEach(btn => {
+    const $btnsBuy = document.querySelectorAll(".card-btn-buy");
+    $btnsBuy.forEach(btn => {
         const btnFound = cart.find(el => el.id === Number(btn.dataset.id));
         if (btnFound) {
             btn.disabled = true;
@@ -179,20 +179,20 @@ const inCart = () => {
 
 //Render products in cart
 const addToCart = () => {
-    iconCart();
+    toggleIconCart();
     $cart.innerHTML = "";
     cart.forEach(el => {
         $cart.innerHTML += `
             <div class="cart-card">
                 <div class="cart-img">
-                    <img class="card-cart-img" src="${el.img}" alt="${el.name}"/>
+                    <img class="cart-img" src="${el.img}" alt="${el.name}"/>
                     <h2 class="cart-name">${el.name}</h2>
                 </div>
-                <div class="card-btns">
+                <div class="cart-btns">
                     <p class="cart-subtotal"><subtotal>$${el.subTotal()}</subtotal></p>
-                    <button class="cart-btn card-cart-btn-dec" data-id="${el.id}">-</button>
+                    <button class="cart-btn cart-btn-dec" data-id="${el.id}">-</button>
                     <p class="cart-quantity">${el.quantity}</p>
-                    <button class="cart-btn card-cart-btn-inc" data-id="${el.id}">+</button>
+                    <button class="cart-btn cart-btn-inc" data-id="${el.id}">+</button>
                     <i class="fa-solid fa-trash-can" data-id="${el.id}"></i>
                 </div>
             </div>
@@ -214,7 +214,7 @@ const addToCart = () => {
 }
 
 //Icon cart
-const iconCart = () => {
+const toggleIconCart = () => {
     if (cart.length === 0) {
         $iconCart.style.visibility = "hidden";
         $cart.classList.remove("cart-visible");
@@ -235,10 +235,10 @@ const displayCart = e => {
 
 //Decrease quantity
 const decrementQuantity = e => {
-    if (e.target.matches(".card-cart-btn-dec")) {
-        const p = cart.find(el => el.id === Number(e.target.dataset.id));
-        p.decreaseQuantity();
-        if (p.quantity === 0) cart = cart.filter(el => el.id != p.id);
+    if (e.target.matches(".cart-btn-dec")) {
+        const productFound = cart.find(el => el.id === Number(e.target.dataset.id));
+        productFound.decreaseQuantity();
+        if (productFound.quantity === 0) cart = cart.filter(el => el.id != productFound.id);
         addToCart();
         saveToLocalStorage();
     }
@@ -246,9 +246,9 @@ const decrementQuantity = e => {
 
 //Increase quantity
 const incrementQuantity = e => {
-    if (e.target.matches(".card-cart-btn-inc")) {
-        const p = cart.find(el => el.id === Number(e.target.dataset.id));
-        p.increaseQuantity();
+    if (e.target.matches(".cart-btn-inc")) {
+        const productFound = cart.find(el => el.id === Number(e.target.dataset.id));
+        productFound.increaseQuantity();
         addToCart();
         saveToLocalStorage();
     }
@@ -257,20 +257,40 @@ const incrementQuantity = e => {
 //Delete product from cart
 const deleteItem = e => {
     if (e.target.matches(".fa-trash-can")) {
-        const p = cart.find(el => el.id === Number(e.target.dataset.id));
-        cart = cart.filter(el => el.id != p.id);
-        saveToLocalStorage();
-        return addToCart();
+        Swal.fire({
+            title: '¿Estás seguro que querés eliminar el producto del carrito?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí!',
+            confirmButtonColor: '#000',
+            confirmTextColor: '#ffcc00',
+            cancelButtonColor: '#ffcc00',
+            cancelButtonText: 'No!',
+            iconColor: '#ffcc00'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const productFound = cart.find(el => el.id === Number(e.target.dataset.id));
+                cart = cart.filter(el => el.id != productFound.id);
+                addToCart();
+                saveToLocalStorage();
+                Swal.fire({
+                    title: 'Producto eliminado',
+                    icon: 'success',
+                    iconColor: '#ffcc00',
+                    confirmButtonColor: '#000'
+                })
+            }
+        })
     }
 }
 
 //Total cart
 const total = () => {
-    return cart.reduce((a, p) => a + p.subtotal, 0);
+    return cart.reduce((accumulator, product) => accumulator + product.subtotal, 0);
 }
 
 //Empty cart
-const emptyCart = e => {
+const emptyCart = () => {
     cart = [];
     listProducts.forEach(el => el.quantity = 0);
     addToCart();
@@ -293,12 +313,12 @@ const checkout = e => {
         mrHankey();
         document.querySelector(".back-to-home").addEventListener("click", () => {
             location.reload();
-            localStorage.clear();
+            localStorage.removeItem("cart");
         });
     }
 }
 
-//Soretes!!
+//Mr. Hankey!!
 const mrHankey = () => {
     setInterval(() => {
         for (let i = 0; i < 10; i++) {
@@ -315,6 +335,13 @@ const mrHankey = () => {
     }, 1000);
 }
 
+//Game Mr. Hankey
+const killMrHankey = e => {
+    if (e.target.matches(".mr-hankey")) {
+        e.target.remove();
+    }
+}
+
 //Save to local storage
 const saveToLocalStorage = () => {
     if (cart.length === 0) return localStorage.clear();
@@ -324,22 +351,26 @@ const saveToLocalStorage = () => {
 //Load local storage
 const loadLocalStorage = () => {
     if (localStorage.getItem('cart')) {
-        let cartCopy = JSON.parse(localStorage.getItem('cart'));
-        cartCopy.forEach(e => {
-            const p = new Product(e.id, e.name, e.img, e.price);
-            p.quantity = e.quantity;
-            cart.push(p);
+        let cartLocalStorage = JSON.parse(localStorage.getItem('cart'));
+        cartLocalStorage.forEach(el => {
+            const product = new Product(el.id, el.name, el.img, el.price);
+            product.quantity = el.quantity;
+            cart.push(product);
         });
         addToCart();
     }
 }
 
+//Load products from local storage
 loadLocalStorage();
 
+//Render products and check if there are disabled buttons
 document.addEventListener("DOMContentLoaded", () => {
     renderProducts();
     inCart();
 });
+
+//Add events
 document.addEventListener("click", e => {
     buyProduct(e);
     decrementQuantity(e);
@@ -347,3 +378,7 @@ document.addEventListener("click", e => {
     deleteItem(e);
     displayCart(e);
 });
+
+document.addEventListener("mouseover", e => {
+    killMrHankey(e);
+})
