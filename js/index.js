@@ -227,7 +227,7 @@ const toggleIconCart = () => {
 
 //Display or hide cart
 const displayCart = e => {
-    if (e.target.matches(".icon-cart") || e.target.matches(".icon-cart-quantity")) {
+    if (e.target.matches([".icon-cart", ".icon-cart-quantity"])) {
         if (!$cart.classList.contains("cart-visible")) return $cart.classList.add("cart-visible");
         if ($cart.classList.contains("cart-visible")) return $cart.classList.remove("cart-visible");
     }
@@ -337,9 +337,7 @@ const mrHankey = () => {
 
 //Game Mr. Hankey
 const killMrHankey = e => {
-    if (e.target.matches(".mr-hankey")) {
-        e.target.remove();
-    }
+    if (e.target.matches(".mr-hankey")) e.target.remove();
 }
 
 //Save to local storage
