@@ -1,102 +1,3 @@
-const data = [
-    {
-        id: 1,
-        name: "Stanley 'Stan' Marsh",
-        img: "./img/stan-marsh.png",
-        price: 100,
-    },
-    {
-        id: 2,
-        name: "Kyle Broflovski",
-        img: "./img/kyle-broflovski.png",
-        price: 200,
-    },
-    {
-        id: 3,
-        name: "Eric Theodore Cartman",
-        img: "./img/eric-cartman.png",
-        price: 300,
-    },
-    {
-        id: 4,
-        name: "Kenneth 'Kenny' McCormick",
-        img: "./img/kenny-mccormick.png",
-        price: 400,
-    },
-    {
-        id: 5,
-        name: "Leopold 'Butters' Stotch",
-        img: "./img/butters-stotch.png",
-        price: 500,
-    },
-    {
-        id: 6,
-        name: "Tweek Tweak",
-        img: "./img/tweek-tweak.png",
-        price: 600,
-    },
-    {
-        id: 7,
-        name: "Bebe Stevens",
-        img: "./img/bebe-stevens.png",
-        price: 700,
-    },
-    {
-        id: 8,
-        name: "Jimmy Valmer",
-        img: "./img/jimmy-valmer.png",
-        price: 800,
-    },
-    {
-        id: 9,
-        name: "Jerome 'Chef' McElroy",
-        img: "./img/chef.png",
-        price: 900,
-    },
-    {
-        id: 10,
-        name: "Clyde Donovan",
-        img: "./img/clyde-donovan.png",
-        price: 1000,
-    },
-    {
-        id: 11,
-        name: "Craig Tucker",
-        img: "./img/craig-tucker.png",
-        price: 1100,
-    },
-    {
-        id: 12,
-        name: "Tolkien Black",
-        img: "./img/token-black.png",
-        price: 1200,
-    },
-    {
-        id: 13,
-        name: "Jason White",
-        img: "./img/jason.png",
-        price: 1300,
-    },
-    {
-        id: 14,
-        name: "Trent Boyett",
-        img: "./img/trent-boyett.png",
-        price: 1400,
-    },
-    {
-        id: 15,
-        name: "Wendy Testaburger",
-        img: "./img/wendy-testaburger.png",
-        price: 1500,
-    },
-    {
-        id: 16,
-        name: "Timmy Burch",
-        img: "./img/timmy-burch.png",
-        price: 1600,
-    },
-];
-
 function Product(id, name, img, price) {
     this.id = id;
     this.name = name;
@@ -118,7 +19,14 @@ $total.classList.add("cart-total");
 const listProducts = [];
 let cart = [];
 
-data.forEach(el => listProducts.push(new Product(el.id, el.name, el.img, el.price)));
+//getBBD
+const getBBD = async () => {
+    const res = await fetch('./data/bdd.json')
+    const data = await res.json();
+    data.forEach(el => listProducts.push(new Product(el.id, el.name, el.img, el.price)));
+    renderProducts();
+    inCart();
+}
 
 //Render products
 const renderProducts = () => {
@@ -359,15 +267,6 @@ const loadLocalStorage = () => {
     }
 }
 
-//Load products from local storage
-loadLocalStorage();
-
-//Render products and check if there are disabled buttons
-document.addEventListener("DOMContentLoaded", () => {
-    renderProducts();
-    inCart();
-});
-
 //Add events
 document.addEventListener("click", e => {
     buyProduct(e);
@@ -380,3 +279,6 @@ document.addEventListener("click", e => {
 document.addEventListener("mouseover", e => {
     killMrHankey(e);
 })
+
+getBBD();
+loadLocalStorage();
