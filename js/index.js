@@ -165,15 +165,15 @@ const inCart = () => {
     const $btnsBuy = document.querySelectorAll(".card-btn-buy");
     $btnsBuy.forEach(btn => {
         const btnFound = cart.find(el => el.id === Number(btn.dataset.id));
-        if (btnFound) {
-            btn.disabled = true;
-            btn.classList.add("btn-disabled");
-            btn.textContent = "AGREGADO";
-        } else {
-            btn.disabled = false;
-            btn.classList.remove("btn-disabled");
-            btn.textContent = "COMPRAR";
-        }
+        btnFound ? (
+            btn.disabled = true,
+            btn.classList.add("btn-disabled"),
+            btn.textContent = "AGREGADO"
+        ) : (
+            btn.disabled = false,
+            btn.classList.remove("btn-disabled"),
+            btn.textContent = "COMPRAR"
+        )
     })
 }
 
@@ -199,18 +199,18 @@ const addToCart = () => {
         `;
     })
     inCart();
-    if (cart.length > 0) {
+    cart.length > 0 ? (
         $total.innerHTML = `
             <p>Total: <total>$${total()}</total></p>
             <div class="cart-btns-total">
                 <button class="empty-cart">Vaciar Carrito</button>
                 <button class="checkout-btn">Finalizar Compra</button>
             </div>
-        `;
-        $cart.insertAdjacentElement("beforeend", $total);
-        document.querySelector(".empty-cart").addEventListener("click", emptyCart);
-        document.querySelector(".checkout-btn").addEventListener("click", checkout);
-    }
+        `,
+        $cart.insertAdjacentElement("beforeend", $total),
+        document.querySelector(".empty-cart").addEventListener("click", emptyCart),
+        document.querySelector(".checkout-btn").addEventListener("click", checkout)
+    ) : (null);
 }
 
 //Icon cart
