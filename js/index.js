@@ -16,7 +16,7 @@ const $cart = document.getElementById("cart");
 const $footer = document.getElementById("footer");
 const $total = document.createElement("footer");
 $total.classList.add("cart-total");
-const listProducts = [];
+let listProducts = [];
 let cart = [];
 
 //getBBD
@@ -30,6 +30,7 @@ const getBBD = async () => {
 
 //Render products
 const renderProducts = () => {
+    $main.innerHTML = "";
     listProducts.forEach(el => {
         $main.innerHTML += `
         <article class="card-product">
@@ -203,7 +204,7 @@ const emptyCart = () => {
     listProducts.forEach(el => el.quantity = 0);
     addToCart();
     $cart.classList.remove("cart-visible");
-    localStorage.clear();
+    localStorage.removeItem("cart");
 }
 
 //Thanks and get back soon
@@ -267,6 +268,22 @@ const loadLocalStorage = () => {
     }
 }
 
+//Filter
+const filter = e => {
+    if (e.target.matches("#input-search")) {
+        const inputValue = e.target.value.toLowerCase();
+        const products = document.querySelectorAll(".card-product");
+        products.forEach(el => {
+            const productName = el.querySelector(".card-name");
+            if (productName.textContent.toLowerCase().includes(inputValue)) {
+                el.classList.remove("hidden");
+            } else {
+                el.classList.add("hidden");
+            }
+        });
+    }
+}
+
 //Add events
 document.addEventListener("click", e => {
     buyProduct(e);
@@ -278,6 +295,10 @@ document.addEventListener("click", e => {
 
 document.addEventListener("mouseover", e => {
     killMrHankey(e);
+})
+
+document.addEventListener("keyup", e => {
+    filter(e);
 })
 
 getBBD();

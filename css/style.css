@@ -300,8 +300,37 @@ body::-webkit-scrollbar-thumb {
 }
 
 /* PRODUCTS */
-.main {
+.main-container {
     background: url('../img/back2.jpg') no-repeat center/cover;
+}
+
+.filter {
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.filter [type="search"] {
+    display: inline;
+    padding: 1rem .5rem;
+    border-radius: 10px;
+    background-color: transparent;
+    width: 20rem;
+    height: 2rem;
+    border: 2px solid #ffcc00;
+    color: #cea500;
+    font-size: 1rem;
+}
+
+.filter [type="search"]::placeholder {
+    color: #fff;
+}
+
+.filter [type="search"]:focus {
+    outline: none;
+}
+
+.main {
     padding: 2rem;
     flex: 1;
     display: grid;
@@ -315,6 +344,12 @@ body::-webkit-scrollbar-thumb {
 .card-product {
     padding: 1rem;
     backdrop-filter: blur(20px);
+}
+
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+    order: 1;
 }
 
 .card-figure img {
@@ -441,24 +476,23 @@ body::-webkit-scrollbar-thumb {
     align-items: center;
 }
 
-/* QUERIES */
 @media screen and (max-width: 480px) {
     .header {
-        background-size: 160%;
-        background-position: -8rem -2rem;
+        background-size: 150% 150%;
+        background-position: 50% 40%;
     }
 
     .icon-cart-container {
-        margin: .5rem;
+        width: 5rem;
+        height: 6rem;
+        margin: 1rem;
+        visibility: hidden;
+        position: relative;
     }
 
-    .cart {
-        width: 21rem;
-        right: 1rem;
-    }
-
-    .footer p {
-        font-size: 2rem;
-        padding: 1rem;
+    .icon-cart-quantity {
+        top: -1.4rem;
+        right: .7rem;
+        padding: .2rem;
     }
 }
