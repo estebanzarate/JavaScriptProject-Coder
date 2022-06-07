@@ -291,6 +291,17 @@ const filter = e => {
                 el.classList.add("hidden");
             }
         });
+        if ($main.firstElementChild.classList.contains("no-results")) {
+            $main.firstElementChild.remove();
+        }
+        const hidden = document.querySelectorAll(".hidden");
+        const listProducts = document.querySelectorAll(".card-product");
+        if (hidden.length === listProducts.length) {
+            const $noResults = document.createElement("div");
+            $noResults.classList.add("no-results");
+            $noResults.textContent = "No hay resultados";
+            $main.insertAdjacentElement("afterbegin", $noResults);
+        }
     }
 }
 
