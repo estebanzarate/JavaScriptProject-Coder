@@ -18,14 +18,25 @@ const $total = document.createElement("footer");
 $total.classList.add("cart-total");
 let listProducts = [];
 let cart = [];
+let loadData = 0;
 
 //getBBD
 const getBBD = async () => {
     const res = await fetch('./data/bdd.json')
     const data = await res.json();
-    data.forEach(el => listProducts.push(new Product(el.id, el.name, el.img, el.price)));
-    renderProducts();
-    inCart();
+    listProducts = [];
+    loadData += 5;
+    for (let i = 0; i < loadData; i++) {
+        if (data[i] == undefined) {
+            const btnLoadMore = document.querySelector("#btn-load-more");
+            btnLoadMore.disabled = true;
+            btnLoadMore.classList.add("btn-disabled-load-more");
+            return;
+        }
+        listProducts.push(new Product(data[i].id, data[i].name, data[i].img, data[i].price));
+        renderProducts();
+        inCart();
+    }
 }
 
 //Render products
@@ -172,7 +183,6 @@ const deleteItem = e => {
             showCancelButton: true,
             confirmButtonText: 'Sí!',
             confirmButtonColor: '#000',
-            confirmTextColor: '#ffcc00',
             cancelButtonColor: '#ffcc00',
             cancelButtonText: 'No!',
             iconColor: '#ffcc00'
@@ -284,6 +294,13 @@ const filter = e => {
     }
 }
 
+//Load more products
+const loadMore = e => {
+    if (e.target.matches(".btn-load-more")) {
+        getBBD();
+    }
+}
+
 //Add events
 document.addEventListener("click", e => {
     buyProduct(e);
@@ -291,6 +308,7 @@ document.addEventListener("click", e => {
     incrementQuantity(e);
     deleteItem(e);
     displayCart(e);
+    loadMore(e);
 });
 
 document.addEventListener("mouseover", e => {

@@ -308,12 +308,13 @@ body::-webkit-scrollbar-thumb {
     padding: 1rem;
     display: flex;
     justify-content: center;
+    gap: 1rem;
 }
 
 .filter [type="search"] {
     display: inline;
     padding: 1rem .5rem;
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: transparent;
     width: 20rem;
     height: 2rem;
@@ -402,7 +403,46 @@ body::-webkit-scrollbar-thumb {
     color: #fff;
 }
 
+.btn-disabled:active {
+    transform: unset;
+}
+
 .btn-disabled:hover {
+    background-color: rgb(97, 97, 97);
+    color: #fff;
+    cursor: default;
+    outline: unset;
+}
+
+.container-load-more {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-load-more {
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    background-color: #cea500;
+    border: none;
+}
+
+.btn-load-more:hover {
+    cursor: pointer;
+    background-color: #ffcc00;
+    outline: #ff9d00 solid .2rem;
+}
+
+.btn-disabled-load-more {
+    background-color: rgb(97, 97, 97);
+    color: #fff;
+}
+
+.btn-disabled-load-more:active {
+    transform: unset;
+}
+
+.btn-disabled-load-more:hover {
     background-color: rgb(97, 97, 97);
     color: #fff;
     cursor: default;
